@@ -40,8 +40,8 @@ $(function () {
             // send Blob objects via XHR requests:
             disableImageResize: /Android(?!.*Chrome)|Opera/
                 .test(window.navigator.userAgent),
-            maxFileSize: 5000000,
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
+            maxFileSize: 2 * 1024 * 1024 * 1024, // 2GB
+            acceptFileTypes: /(\.|\/)(mp4|avi|mkv|mp3|mov|mpg|flv|m4v)$/i
         });
         // Upload server status check for browsers with CORS support:
         if ($.support.cors) {
