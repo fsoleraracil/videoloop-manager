@@ -2,8 +2,18 @@ $(function () {
     lastStatus = null;
 
     $(document).ready(function() {
+        $('.vl-btn-start').click(function() {
+            service('start');
+        });
+        $('.vl-btn-stop').click(function() {
+            service('stop');
+        });
+        $('.vl-btn-restart').click(function() {
+            service('restart');
+        });
+
         refreshStatus();
-        setInterval(refreshStatus, 3 * 1000);
+        //setInterval(refreshStatus, 3 * 1000);
     });
 
     function refreshStatus() {
@@ -43,5 +53,28 @@ $(function () {
                 }
             }
         }
+    }
+
+    function service($command) {
+        setVideoloopServiceEnabled(false);
+        toastr.info('A \'' + $command + '\' command has been scheduled in the server. It could take some minutes, please wait.');
+        $.ajax({
+            url: 'server/php/videoloop/?cmd=' + $command,
+            complete: function (response) {
+                setVideoloopServiceEnabled(true);
+                setTimeout(refreshStatus, 60 * 1000);
+            },
+            error: function () {
+                setVideoloopServiceEnabled(true);
+                toastr.error('Error while executing \'' + $command + '\'. Maybe the service is not available.', 'Cannot execute the command');
+            }
+        });
+        return false;
+    }
+
+    function setVideoloopServiceEnabled($enabled) {
+        $('#videoloop-service').find('.btn').each(function() {
+            $(this).prop('disabled', !$enabled);
+        });
     }
 });

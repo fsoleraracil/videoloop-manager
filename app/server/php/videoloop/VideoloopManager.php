@@ -13,7 +13,7 @@ class VideoLoopManager {
         if (!in_array($command, $allowed_commands)) {
             throw new Exception("unknown command");
         }
-        echo shell_exec('/home/pi/service.videoloop.sh ' . $command);
+        echo shell_exec('/home/pi/videoloop/service.videoloop.sh ' . $command);
     }
 }
 
